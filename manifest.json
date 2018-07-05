@@ -14,7 +14,7 @@
       "C_CHAT": 1,
       "C_SHOW_ITEM_TOOLTIP_EX": 2,
       "S_SHOW_AWESOMIUMWEB_SHOP":1,
-      "S_RETURN_TO_LOBBY":1
+      "S_RETURN_TO_LOBBY":1,
       "C_LOAD_TOPO_FIN":1
    }
 }
