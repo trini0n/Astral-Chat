@@ -15,9 +15,9 @@ module.exports = function HiWelcomeToMyMinecraftLetsPlayImYourHostHUUUUUUUUUUGEE
     let website = [{link: 4012, linkKey: 'google.com'}], // So that websites have a backup or something
             online = false;
     try {
-        config = require('./config.json');
+        var config = require('./config.json');
     } catch (e) {
-        config = {
+        var config = {
             "discordMessages": true,
             "allowWebLinks": true,
             "myName": "Anonymous",
@@ -111,7 +111,7 @@ module.exports = function HiWelcomeToMyMinecraftLetsPlayImYourHostHUUUUUUUUUUGEE
         net.send('login', config.id);
         online = true;
     });
-    
+
     dispatch.hook('S_JOIN_PRIVATE_CHANNEL', 2, event => event.index === 5 ? false : undefined);
     dispatch.hook('C_LEAVE_PRIVATE_CHANNEL', 1, event => event.index === 5 ? false : undefined);
     dispatch.hook('C_REQUEST_PRIVATE_CHANNEL_INFO', 2, event => {
