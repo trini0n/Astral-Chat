@@ -9,7 +9,7 @@
 ***
 
 ## What this?
-Astral Chat (AC) is the dumbed down, somehow even more poorly written, cousin of [Astral TERA, the server within a server](https://github.com/codeagon/Astral-TERA/blob), which you should totes go check out thanks. The goal of AC is to provide players (mainly in guilds), the ability to talk to people on discord without the risk of being banned that comes with [TERA Discord Relay](https://github.com/meishuu/tera-discord-relay).
+Astral Chat (AC) is the dumbed down, somehow even more poorly written, cousin of [Astral TERA, the server within a server](https://github.com/codeagon/Astral-TERA/), which you should totes go check out thanks. The goal of AC is to provide players (mainly in guilds), the ability to talk to people on discord without the risk of being banned that comes with [TERA Discord Relay](https://github.com/meishuu/tera-discord-relay).
 
 ## How work?
 Astral Chat works by sending messages sent on the `/6`chat channel to a third party server hosted by (hopefully) someone you trust. The messages are then sent to a discord bot (again hosted by someone). Essentially allowing people in-game the ability to talk to people on discord and visa versa. This also works without the discord component and across servers, allowing for a cross-server and cross region chat to exist also. Also you can watch cat videos together.
