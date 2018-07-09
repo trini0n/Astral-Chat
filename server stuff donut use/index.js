@@ -2,14 +2,13 @@ const Server = require('./networking'); //bbccddeeff
 
 MATCH = /^\.([^!].*)$/;
 COLOR = /#\w{6}/g;
-URL = /(www\.\w{1,}?\..{2,}?(\s|$))/gm;
+HTTPS = /(http(s?))\:\/\//gi;
+URL = /((?:(http|https):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gm;
 const users = {};
 const port = process.env.PORT || 3454;
 const secure = false;
-
 let amount = 0,
-        sendmessage = true;
-
+    sendmessage = true;
 const server = new Server({}, (client) => {
 
     let curId = false;
@@ -19,20 +18,21 @@ const server = new Server({}, (client) => {
     }
 
     function wwwReplace(match, p1, p2, offset, string) {
+        console.log(string)
+        if (!HTTPS.exec(p1)) {
+            p1 = `https:\/\/${p1}`
+        }
+        console.log('wwwreplace')
         let linkKey = rand(1, 99999999);
-        client.broadcast('weburl', `https://${p1}`, linkKey);
-        return `<font color="#7f7ff6"><ChatLinkAction param=\"1#####51005@${linkKey}@SERVER\">https://${p1}</ChatLinkAction></FONT>`;
-    }
-
-    function dReplaceLink(match, p1, p2, offset, string) {
-        let linkKey = rand(1, 99999999);
-        client.broadcast('weburl', `https://${p1}`, linkKey);
-        return `https://${p1}`;
+        client.broadcast('weburl', `${p1}${string}`, linkKey);
+        console.log(p1)
+        return `<font color="#7f7ff6"><ChatLinkAction param=\"1#####51005@${linkKey}@SERVER\">${p1}${string}</ChatLinkAction></FONT>`;
     }
 
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
+
     function logout() {
         if (curId !== false) {
             client.broadcast('remove', curId);
@@ -46,7 +46,6 @@ const server = new Server({}, (client) => {
     client.on('dping', () => {
         client.send('dpong', amount);
     });
-
     client.on('login', (id) => {
         if (curId !== false && curId !== id) {
             delete users[curId];
@@ -55,7 +54,6 @@ const server = new Server({}, (client) => {
         client.broadcast('add', id);
         amount++;
     });
-
     client.on('chat', check((name, msg, discord) => {
         message = msg;
         if (msg.includes("&lt;font")) {
@@ -70,21 +68,17 @@ const server = new Server({}, (client) => {
         if (msg.includes(`:tm:`)) {
             message = msg.replace(/:tm:/g, `&#8482;`);
         }
-
         if (URL.exec(msg)) {
+            console.log(`url detec ${msg}`)
             if (discord === 2) {
-                return;
-            }
-            if (discord === 1) {
-                message = msg.replace(/(www\.\w{1,}?\..{2,}?(\s|$))/gm, wwwReplace);
+                console.log('discord1')
+                message = msg.replace(URL, wwwReplace);
                 client.broadcast('chat', name, message, 2);
                 sendmessage = false;
                 return;
             } else {
-                link = URL.exec(msg);
-                message = msg.replace(/(www\.\w{1,}?\..{2,}?(\s|$))/gm, wwwReplace);
-                bmessage = msg.replace(/(www\.\w{1,}?\..{2,}?(\s|$))/gm, dReplaceLink);
-                client.broadcast('dmessage', name, bmessage);
+                client.broadcast('dmessage', name, msg);
+                message = msg.replace(URL, wwwReplace);
                 client.broadcast('chat', name, message, 2);
                 return;
             }
