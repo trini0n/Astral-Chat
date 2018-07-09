@@ -1,4 +1,5 @@
 # Astral Chat
+[![Discord](https://discordapp.com/api/guilds/385946679733518338/widget.png)](https://discord.gg/dzB7xZK)
 
 ![Art by Kacchan#8317](https://i.imgur.com/04ljwEO.png)
 
