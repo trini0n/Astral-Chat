@@ -18,14 +18,11 @@ const server = new Server({}, (client) => {
     }
 
     function wwwReplace(match, p1, p2, offset, string) {
-        console.log(string)
         if (!HTTPS.exec(p1)) {
             p1 = `https:\/\/${p1}`
         }
-        console.log('wwwreplace')
         let linkKey = rand(1, 99999999);
         client.broadcast('weburl', `${p1}${string}`, linkKey);
-        console.log(p1)
         return `<font color="#7f7ff6"><ChatLinkAction param=\"1#####51005@${linkKey}@SERVER\">${p1}${string}</ChatLinkAction></FONT>`;
     }
 
@@ -69,9 +66,7 @@ const server = new Server({}, (client) => {
             message = msg.replace(/:tm:/g, `&#8482;`);
         }
         if (URL.exec(msg)) {
-            console.log(`url detec ${msg}`)
             if (discord === 2) {
-                console.log('discord1')
                 message = msg.replace(URL, wwwReplace);
                 client.broadcast('chat', name, message, 2);
                 sendmessage = false;
