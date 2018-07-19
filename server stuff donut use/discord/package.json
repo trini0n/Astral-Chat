@@ -1,0 +1,24 @@
+{
+  "name": "discordthing",
+  "version": "1.0.0",
+  "description": "Discord server component of Astral Chat",
+  "main": "discord.js",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "node-emoji": "^1.8.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeagon/Astral-Chat.git"
+  },
+  "author": "Codeagon",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/codeagon/Astral-Chat/issues"
+  },
+  "homepage": "https://github.com/codeagon/Astral-Chat#readme"
+}
